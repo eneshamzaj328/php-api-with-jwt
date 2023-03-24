@@ -1,24 +1,22 @@
 <?php
 
 header('Access-Control-Allow-Origin: *');
-header('Access-Cotrol-Allow-Method: GET');
+header('Access-Control-Allow-Method: POST');
 header('Content-Type: application/json; Charset=UTF-8');
 
 require '../classes/crud_actions.php';
-include '../vendor/autoload.php';
-
-use \Firebase\JWT\JWT;
-use \Firebase\JWT\Key;
+include '../auth/classes/auth.php';
 
 $obj = new CRUD();
 
 if ($_SERVER["REQUEST_METHOD"] !== "GET") {
+    http_response_code(500);
     echo json_encode([
         'status' => 0,
         'message' => 'Access Denied',
     ]);
 
-    exit();
+    die();
 }
 
 $data = json_decode(file_get_contents("php://input"), true);
@@ -28,12 +26,16 @@ try {
     $headers = getallheaders();
 
     $json_web_token = $headers['Authorization'] ?? [];
-    if (!$headers || !$json_web_token) die('Error 403.');
+    if (!$headers || !$json_web_token) {
+        http_response_code(500);
+        echo json_encode(['status' => 0, 'message' => 'Not authorized!']);
+        die();
+    }
 
-    $privateKey = "EniCodex";
-    $user_data = JWT::decode($json_web_token, new Key($privateKey, 'HS256')); // $privateKey, array('HS256')); //['HS256']);
+    $user_data = $auth->jwt_decode($json_web_token);
+    $user = $user_data->data;
 
-    $id = $user_data->data->id;
+    $id = $user->id;
 
     $obj->select('products', '*', null, "user_id='{$id}'", "BY id DESC", null);
     $result = $obj->getResult();
