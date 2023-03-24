@@ -8,12 +8,18 @@ Whether you're building a new API from scratch or looking for a secure and relia
 
 Features
 
-Built using PHP and Composer to autoload files
-Easy to set up both in Front-End and in Back-End and customize
-Simple folder structure
-Function Helpers to Ease the Process
-Pre-built endpoints for common CRUD operations
-JWT authentication for enhanced security
-Designed in a simpler way
+Built using PHP and Composer to autoload files  
+
+Easy to set up both in Front-End and in Back-End and customize  
+
+Simple folder structure  
+
+Function Helpers to Ease the Process 
+
+Pre-built endpoints for common CRUD operations  
+
+JWT authentication for enhanced security  
+
+Designed in a simpler way  
 
 If you like my work please give it a star or hire me why not :)
